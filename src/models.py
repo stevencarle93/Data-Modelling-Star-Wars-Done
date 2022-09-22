@@ -8,53 +8,92 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
-#Classes Definitions
-class User(Base):
-    __tablename__ = 'user'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
+class Usuario(Base):
+    __tablename__ = 'usuario'
+    
     id = Column(Integer, primary_key = True)
-    username = Column(String(250), nullable = False, unique=True)
-    firstname = Column(String(250), nullable = False)
-    lastname = Column(String(250), nullable = False)
-    email = Column(String(250), nullable = False, unique=True)
+    name = Column(String(250), nullable = False)
+    lastName = Column(String(250), nullable = False)
+    email = Column(String(20), nullable = False)
+    password = Column(String(20), nullable = False)
 
-class Post(Base):
-    __tablename__ = 'post'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key = True)
-    user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship(User)
+class Planeta(Base):
+    __tablename__ = 'planeta'
 
-class Comment(Base):
-    __tablename__= 'comment'
-    id=Column(Integer, primary_key = True)
-    comment_text=Column(String(500),nullable = False)
-    author_id=Column(Integer, ForeignKey('user.id'))
-    author=relationship(User)
-    post_id=Column(Integer, ForeignKey('post.id'))
-    post=relationship(Post)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable = False)
+    rotationPeriod = Column(Integer, nullable = False)
+    orbitalPeriod = Column(Integer, nullable = False)
+    diameter = Column(Integer, nullable = False)
+    climate = Column(String(250), nullable = False)
+    gravity = Column(String(250), nullable = False)
+    terrain = Column(String(250), nullable = False)
+    surfaceWater = Column(Integer, nullable = False)
+    population = Column(Integer, nullable = False)
+    residents = Column(String(250), nullable = False)
 
-class Media(Base):
-    __tablename__ = 'media'
-    id = Column(Integer, primary_key = True)
-    med_type = Column(String(250), nullable = False)
-    url = Column(String(250), nullable = False)
-    med_post_id = Column(Integer, ForeignKey('post.id'))
-    med_post = relationship(Post)
+    user_id = Column(Integer, ForeignKey('usuario.id'))
+    user = relationship(Usuario)
 
-class Follower(Base):
-    __tablename__ = 'follower'
-    id = Column(Integer, primary_key = True)
-    user_from_id = Column(Integer, ForeignKey('user.id'))
-    userfrom = relationship(User)
-    user_to_id = Column(Integer, ForeignKey('user.id'))
-    userto = relationship(User)
+class Personaje(Base):
+    __tablename__ = 'personaje'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable = False)
+    height = Column(Integer, nullable = False)
+    mass = Column(Integer, nullable = False)
+    hairColor = Column(String(250), nullable = False)
+    skinColor = Column(String(250), nullable = False)
+    eyeColor = Column(String(250), nullable = False)
+    birthYear = Column(String(250), nullable = False)
+    gender = Column(String(250), nullable = False)
+    homeworld = Column(String(250), nullable = False)
+
+    user_id = Column(Integer, ForeignKey('usuario.id'))
+    user = relationship(Usuario)
+
+class Vehiculos(Base):
+    __tablename__ = 'vehiculos'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable = False)
+    model = Column(String(250), nullable = False)
+    manufacturer = Column(String(250), nullable = False)
+    costInCredits = Column(Integer, nullable = False)
+    length = Column(Integer, nullable = False)
+    maxAtmospheringSpeed = Column(Integer, nullable = False)
+    crew = Column(Integer, nullable = False)
+    passengers = Column(Integer, nullable = False)
+    cargoCapacity = Column(Integer, nullable = False)
+    consumables = Column(String(250), nullable = False)
+    vehicleClass = Column(String(250), nullable = False)
+    homeworld = Column(String(250), nullable = False)
+
+    character_id = Column(Integer, ForeignKey('personaje.id'))
+    character = relationship(Personaje)
+
+class Starships(Base):
+    __tablename__ = 'starships'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable = False)
+    model = Column(String(250), nullable = False)
+    manufacturer = Column(String(250), nullable = False)
+    costInCredits = Column(Integer, nullable = False)
+    length = Column(Integer, nullable = False)
+    maxAtmospheringSpeed = Column(Integer, nullable = False)
+    crew = Column(Integer, nullable = False)
+    passengers = Column(Integer, nullable = False)
+    cargoCapacity = Column(Integer, nullable = False)
+    hyperdriveRating = Column(Integer, nullable = False)
+    mglt = Column(Integer, nullable = False)
+    starshipClass = Column(String(250), nullable = False)
+
+    character_id = Column(Integer, ForeignKey('personaje.id'))
+    character = relationship(Personaje)
 
     def to_dict(self):
         return {}
-
 
 ## Draw from SQLAlchemy base
 render_er(Base, 'diagram.png')
